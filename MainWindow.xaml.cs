@@ -31,6 +31,7 @@ namespace NapierFilteringSystem
             txtSender.Visibility = Visibility.Hidden;
             fldBody.Visibility = Visibility.Visible;
             txtType.Visibility = Visibility.Hidden;
+            fldHeader.MaxLength = 10;
 
         }
 
@@ -53,6 +54,7 @@ namespace NapierFilteringSystem
 
                         fldSender.Visibility = Visibility.Visible;
                         txtSender.Visibility = Visibility.Visible;
+                        fldSender.MaxLength = 15;
 
                         fldBody.Visibility = Visibility.Visible;
                         fldBody.MaxLength = 140;
@@ -67,6 +69,7 @@ namespace NapierFilteringSystem
                         fldHeader.Visibility = Visibility.Visible;
 
                         fldSubject.Visibility = Visibility.Visible;
+                        fldSubject.MaxLength = 20;
                         txtSubject.Visibility = Visibility.Visible;
 
                         fldSender.Visibility = Visibility.Visible;
@@ -88,6 +91,7 @@ namespace NapierFilteringSystem
                         txtSubject.Visibility = Visibility.Hidden;
 
                         fldSender.Visibility = Visibility.Visible;
+                        fldSender.MaxLength = 15;
                         txtSender.Visibility = Visibility.Visible;
 
                         fldBody.Visibility = Visibility.Visible;
@@ -110,6 +114,7 @@ namespace NapierFilteringSystem
                 fldBody.Visibility = Visibility.Visible;
                 txtType.Visibility = Visibility.Hidden;
                 fldBody.MaxLength = 0;
+                txtCharLimit.Text = fldBody.Text.Length + " / " + fldBody.MaxLength;
             }
         }
 
@@ -117,7 +122,7 @@ namespace NapierFilteringSystem
         {
             string header = fldHeader.Text;
             string headerType;
-            Regex headerRegex = new Regex(@"^(E|T|S|)[0-9]*9$");
+            Regex headerRegex = new Regex(@"^(E|T|S|)[0-9]{9}$");
 
 
             if (!String.IsNullOrEmpty(header))
@@ -130,7 +135,7 @@ namespace NapierFilteringSystem
                     {
                         case "S":
                             string smsSender = fldSender.Text;
-                            Regex SMSRegexSender = new Regex(@"^[\+][0-9]{0,14}$");
+                            Regex SMSRegexSender = new Regex(@"^[\+][0-9]{7,14}$");
 
                             if(!String.IsNullOrEmpty(smsSender))
                             {
@@ -158,7 +163,22 @@ namespace NapierFilteringSystem
 
 
                         case "T":
-                            MessageBox.Show("Tweet");
+                            string tweetSender = fldSender.Text;
+                            Regex TweetRegexSender = new Regex(@"^(@)[A-Za-z0-9_]{1,15}$");
+
+                            if(!String.IsNullOrEmpty(tweetSender))
+                            {
+                                if(TweetRegexSender.IsMatch(tweetSender))
+                                {
+                                    MessageBox.Show("Worked!");
+                                } else
+                                {
+                                    MessageBox.Show("Twitter ID doesn't match format! (@Person)");
+                                }
+                            } else
+                            {
+                                MessageBox.Show("Twitter ID cannot be empty!");
+                            }
                             break;
 
 
@@ -188,8 +208,6 @@ namespace NapierFilteringSystem
 
         private void fldBody_TextChanged(object sender, TextChangedEventArgs e)
         {
-            //int BodyCharCount = fldBody.Text.Length;
-
             txtCharLimit.Text = fldBody.Text.Length + " / " + fldBody.MaxLength;
         }
     }
