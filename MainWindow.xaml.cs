@@ -32,7 +32,10 @@ namespace NapierFilteringSystem
             fldBody.Visibility = Visibility.Visible;
             txtType.Visibility = Visibility.Hidden;
             fldHeader.MaxLength = 10;
-
+            fldSIRType.Visibility = Visibility.Hidden;
+            txtSIR.Visibility = Visibility.Hidden;
+            fldSortCode.Visibility = Visibility.Hidden;
+            txtSortCode.Visibility = Visibility.Hidden;
         }
 
         private void fldHeader_TextChanged(object sender, TextChangedEventArgs e)
@@ -63,6 +66,12 @@ namespace NapierFilteringSystem
 
                         txtType.Text = "SMS Text Message";
                         txtType.Visibility = Visibility.Visible;
+
+                        fldSIRType.Visibility = Visibility.Hidden;
+                        txtSIR.Visibility = Visibility.Hidden;
+                        fldSortCode.Visibility = Visibility.Hidden;
+                        txtSortCode.Visibility = Visibility.Hidden;
+
                         break;
 
                     case "E":
@@ -101,6 +110,11 @@ namespace NapierFilteringSystem
 
                         txtType.Text = "Tweet";
                         txtType.Visibility = Visibility.Visible;
+
+                        fldSIRType.Visibility = Visibility.Hidden;
+                        txtSIR.Visibility = Visibility.Hidden;
+                        fldSortCode.Visibility = Visibility.Hidden;
+                        txtSortCode.Visibility = Visibility.Hidden;
                         break;
                 } 
             }
@@ -115,6 +129,11 @@ namespace NapierFilteringSystem
                 txtType.Visibility = Visibility.Hidden;
                 fldBody.MaxLength = 0;
                 txtCharLimit.Text = fldBody.Text.Length + " / " + fldBody.MaxLength;
+                fldSIRType.Visibility = Visibility.Hidden;
+                txtSIR.Visibility = Visibility.Hidden;
+                fldSortCode.Visibility = Visibility.Hidden;
+                txtSortCode.Visibility = Visibility.Hidden;
+
             }
         }
 
@@ -157,6 +176,9 @@ namespace NapierFilteringSystem
 
 
                         case "E":
+                            string emailSender = fldSender.Text;
+                            Regex EmailRegexSender = new Regex(@"^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$");
+
                             MessageBox.Show("Email");
                             break;
 
@@ -208,7 +230,72 @@ namespace NapierFilteringSystem
 
         private void fldBody_TextChanged(object sender, TextChangedEventArgs e)
         {
+
+
+            if(Regex.IsMatch(fldSubject.Text,@"^SIR\d{2}/\d{2}/\d{2}$"))
+            {
+                Regex SortCodeRegex = new Regex(@"[S|s]ort\s[C|c]ode:\s\b[0-9]{2}-[0-9]{2}-[0-9]{2}\b");
+                Regex IncidentRegex = new Regex(@"Nature\sOf\sIncident:\s\b{0}\b");
+                List<string> incidents = new List<string>()
+                {
+                    "Theft",
+                    "Staff Attack",
+                    "ATM Theft",
+                    "Raid",
+                    "Customer Abuse",
+                    "Staff Abuse",
+                    "Bomb Threat",
+                    "Terrorism",
+                    "Suspicious Incident",
+                    "Intelligence",
+                    "Cash Loss",
+                };
+
+                foreach (var incident in incidents)
+                {
+                    string incidentpattern = string.Format(@"[N|n]ature\s[O|o]f\s[I|i]ncident:\s\b{0}\b", incident);
+
+                    if (Regex.IsMatch(fldBody.Text, incidentpattern))
+                    {
+                        fldSIRType.Text = incident;
+                        fldSIRType.Visibility = Visibility.Visible;
+                        txtSIR.Visibility = Visibility.Visible;
+                        
+                    }
+                }
+
+                if (SortCodeRegex.IsMatch(fldBody.Text)) 
+                {
+                    MatchCollection sortmatches = SortCodeRegex.Matches(fldBody.Text);
+
+                    fldSortCode.Visibility = Visibility.Visible;
+                    fldSortCode.Text = sortmatches[0].Value.Substring(11);
+                    txtSortCode.Visibility = Visibility.Visible;
+
+                }
+                else
+                {
+                    fldSortCode.Visibility = Visibility.Hidden;
+                    fldSortCode.Text = "";
+                    txtSortCode.Visibility = Visibility.Hidden;
+
+                    txtSIR.Visibility = Visibility.Hidden;
+                    fldSIRType.Visibility = Visibility.Hidden;
+                    fldSIRType.Text = "";
+                }
+            } else
+            {
+                fldSortCode.Visibility = Visibility.Hidden;
+                fldSortCode.Text = "";
+                txtSortCode.Visibility = Visibility.Hidden;
+
+                txtSIR.Visibility = Visibility.Hidden;
+                fldSIRType.Visibility = Visibility.Hidden;
+                fldSIRType.Text = "";
+            }
+
             txtCharLimit.Text = fldBody.Text.Length + " / " + fldBody.MaxLength;
+
         }
     }
 }

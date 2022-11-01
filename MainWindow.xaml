@@ -10,15 +10,19 @@
         <TextBox HorizontalAlignment="Left" Margin="101,56,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" x:Name="fldHeader" TextChanged="fldHeader_TextChanged"/>
         <TextBox HorizontalAlignment="Left" Margin="101,95,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" x:Name="fldSender"/>
         <TextBox HorizontalAlignment="Left" Margin="101,136,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" x:Name="fldSubject"/>
-        <TextBox HorizontalAlignment="Left" Margin="101,197,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="272" Height="142" x:Name="fldBody" TextChanged="fldBody_TextChanged"/>
+        <TextBox HorizontalAlignment="Left" Margin="101,197,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="272" Height="142" x:Name="fldBody" TextChanged="fldBody_TextChanged" AcceptsReturn="True"/>
         <TextBlock HorizontalAlignment="Left" Margin="57,56,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="45" x:Name="txtHeader"><Run Language="en-gb" Text="Header"/></TextBlock>
         <TextBlock HorizontalAlignment="Left" Margin="57,96,0,0" TextWrapping="Wrap" VerticalAlignment="Top" x:Name="txtSender"><Run Language="en-gb" Text="Sender"/></TextBlock>
-        <TextBlock HorizontalAlignment="Left" Margin="57,136,0,0" TextWrapping="Wrap" VerticalAlignment="Top" x:Name="txtSubject"><Run Language="en-gb" Text="Subject"/></TextBlock>
+        <TextBlock HorizontalAlignment="Left" Margin="56,136,0,0" TextWrapping="Wrap" VerticalAlignment="Top" x:Name="txtSubject"><Run Language="en-gb" Text="Subject"/></TextBlock>
         <Button Content="Button" HorizontalAlignment="Left" Margin="200,358,0,0" VerticalAlignment="Top" Width="74"/>
         <Button Content="Save" HorizontalAlignment="Left" Margin="101,358,0,0" VerticalAlignment="Top" Width="74" Click="Save_Click"/>
         <Button Content="Clear" HorizontalAlignment="Left" Margin="299,358,0,0" VerticalAlignment="Top" Width="74" Click="Clear_Click"/>
         <TextBlock HorizontalAlignment="Left" Margin="10,21,0,0" TextWrapping="Wrap" VerticalAlignment="Top" x:Name="txtType"/>
         <TextBlock HorizontalAlignment="Left" Margin="101,339,0,0" Text="" TextWrapping="Wrap" VerticalAlignment="Top" x:Name="txtCharLimit" FontSize="10"/>
+        <TextBox HorizontalAlignment="Left" Margin="299,136,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="74" x:Name="fldSIRType" IsEnabled="False"/>
+        <TextBlock HorizontalAlignment="Left" Margin="299,119,0,0" TextWrapping="Wrap" VerticalAlignment="Top" x:Name="txtSIR"><Run Language="en-gb" Text="Incident Type"></Run></TextBlock>
+        <TextBox HorizontalAlignment="Left" Margin="299,92,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="74" IsEnabled="False" x:Name="fldSortCode"/>
+        <TextBlock HorizontalAlignment="Left" Margin="300,75,0,0" TextWrapping="Wrap" VerticalAlignment="Top" x:Name="txtSortCode"><Run Language="en-gb" Text="Sort Code"/></TextBlock>
 
     </Grid>
 </Window>
