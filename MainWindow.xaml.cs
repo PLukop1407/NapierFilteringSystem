@@ -234,8 +234,8 @@ namespace NapierFilteringSystem
 
             if(Regex.IsMatch(fldSubject.Text,@"^SIR\d{2}/\d{2}/\d{2}$"))
             {
-                Regex SortCodeRegex = new Regex(@"[S|s]ort\s[C|c]ode:\s\b[0-9]{2}-[0-9]{2}-[0-9]{2}\b");
-                Regex IncidentRegex = new Regex(@"Nature\sOf\sIncident:\s\b{0}\b");
+                Regex SortCodeRegex = new Regex(@"[S|s]ort\s[C|c]ode:\s\b\d{2}-\d{2}-\d{2}\b");
+                //Regex IncidentRegex = new Regex(@"Nature\sOf\sIncident:\s\b{0}\b");
                 List<string> incidents = new List<string>()
                 {
                     "Theft",
