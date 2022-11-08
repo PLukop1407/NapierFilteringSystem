@@ -13,6 +13,9 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Text.RegularExpressions;
+using System.IO;
+using Newtonsoft.Json;
+using System.Security.Cryptography.X509Certificates;
 
 namespace NapierFilteringSystem
 {
@@ -160,7 +163,15 @@ namespace NapierFilteringSystem
                             {
                                 if (SMSRegexSender.IsMatch(smsSender))
                                 {
-                                    MessageBox.Show("Worked");
+                                    string smsSubject = fldSubject.Text;
+                                    string smsBody = fldBody.Text;
+                                    //MessageBox.Show("Worked"); 
+                                    Message sms = new Message(header, smsSender, smsSubject, Message.ProcessAbbreviations(smsBody));
+                                    SaveMessage(sms);
+                                    Clear_Fields(); 
+                                    
+
+
                                 }
                                 else
                                 {
@@ -222,10 +233,9 @@ namespace NapierFilteringSystem
 
         private void Clear_Click(object sender, RoutedEventArgs e)
         {
-            fldHeader.Clear();
-            fldSubject.Clear();
-            fldSender.Clear();
-            fldBody.Clear();
+
+            Clear_Fields();
+
         }
 
         private void fldBody_TextChanged(object sender, TextChangedEventArgs e)
@@ -297,5 +307,58 @@ namespace NapierFilteringSystem
             txtCharLimit.Text = fldBody.Text.Length + " / " + fldBody.MaxLength;
 
         }
+
+        public void SaveMessage(Message writeableMessage)
+        {
+            MessageList jsonmsgList = new MessageList { };
+            //StreamWriter writetoJson = new StreamWriter(@"C:\Napier Filtering System\Messages.json");
+            //StreamReader readfromJson = new StreamReader(@"C:\Napier Filtering System\Messages.json");
+            string jsonFilepath = @"C:\Napier Filtering System\Messages.json";
+
+            if (!Directory.Exists(@"C:\Napier Filtering System"))
+            {
+                Directory.CreateDirectory(@"C:\Napier Filtering System");
+            }
+                
+            if (File.Exists(@"C:\Napier Filtering System\Messages.json"))
+                {
+                jsonmsgList = JsonConvert.DeserializeObject<MessageList>(File.ReadAllText(jsonFilepath));
+                jsonmsgList.Messages.Add(writeableMessage);
+                File.WriteAllText(jsonFilepath, JsonConvert.SerializeObject(jsonmsgList, Formatting.Indented) + "\r\n");
+
+                MessageBox.Show("Message saved to file!");
+
+                
+            } else
+                {
+                    File.WriteAllText(jsonFilepath,"{\"Messages\": []}");
+                    jsonmsgList = JsonConvert.DeserializeObject<MessageList>(File.ReadAllText(jsonFilepath));
+                    jsonmsgList.Messages.Add(writeableMessage);
+                    File.WriteAllText(jsonFilepath, JsonConvert.SerializeObject(jsonmsgList, Formatting.Indented) + "\r\n");
+
+                    MessageBox.Show("Message saved to new json file!");
+                
+                }
+           
+
+
+
+        }
+
+        public class MessageList
+        {
+            public List<Message> Messages { get; set; }
+        }
+
+        public void Clear_Fields()
+        {
+            fldHeader.Clear();
+            fldSubject.Clear();
+            fldSender.Clear();
+            fldBody.Clear();
+
+        }
+
+
     }
 }
