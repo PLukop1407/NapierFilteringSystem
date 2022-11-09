@@ -15,7 +15,6 @@ using System.Windows.Shapes;
 using System.Text.RegularExpressions;
 using System.IO;
 using Newtonsoft.Json;
-using System.Security.Cryptography.X509Certificates;
 
 namespace NapierFilteringSystem
 {
@@ -155,32 +154,36 @@ namespace NapierFilteringSystem
 
                     switch (headerType)
                     {
-                        case "S":
-                            string smsSender = fldSender.Text;
+                       case "S":
+                           string smsSender = fldSender.Text;
+                           string smsBody = fldBody.Text;
                             Regex SMSRegexSender = new Regex(@"^[\+][0-9]{7,14}$");
 
-                            if(!String.IsNullOrEmpty(smsSender))
+                           if (!String.IsNullOrEmpty(smsSender))
+                           {
+                               if (SMSRegexSender.IsMatch(smsSender))
+                               {
+                                    if(!String.IsNullOrEmpty(smsBody))
+                                    {
+                                        string smsSubject = fldSubject.Text;
+                                        Message sms = new Message(header, smsSender, smsSubject, Message.ProcessAbbreviations(smsBody));
+                                        SaveMessage(sms);
+                                        Clear_Fields();
+                                    } else
+                                    {
+                                        MessageBox.Show("SMS body cannot be empty!", caption: "Error");
+                                    }
+
+                               }
+                               else
+                               {
+                                   MessageBox.Show("Sender number doesn't match international number format!", caption: "Error");
+                               }
+
+                           }
+                            else
                             {
-                                if (SMSRegexSender.IsMatch(smsSender))
-                                {
-                                    string smsSubject = fldSubject.Text;
-                                    string smsBody = fldBody.Text;
-                                    //MessageBox.Show("Worked"); 
-                                    Message sms = new Message(header, smsSender, smsSubject, Message.ProcessAbbreviations(smsBody));
-                                    SaveMessage(sms);
-                                    Clear_Fields(); 
-                                    
-
-
-                                }
-                                else
-                                {
-                                    MessageBox.Show("Sender number doesn't match international number format!");
-                                }
-
-                            } else
-                            {
-                                MessageBox.Show("Sender number cannot be empty!");
+                                MessageBox.Show("Sender number cannot be empty!", caption: "Error");
                             }
                             break;
 
@@ -188,47 +191,96 @@ namespace NapierFilteringSystem
 
                         case "E":
                             string emailSender = fldSender.Text;
+                            string emailSubject = fldSubject.Text;
+                            string emailBody = fldBody.Text;
                             Regex EmailRegexSender = new Regex(@"^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$");
 
-                            MessageBox.Show("Email");
+                            if (!String.IsNullOrEmpty(emailSender))
+                            {
+                                if (EmailRegexSender.IsMatch(emailSender))
+                                {
+                                    if(!String.IsNullOrEmpty(emailSubject))
+                                    {
+                                        if(!String.IsNullOrEmpty(emailBody))
+                                        {
+                                            if(!String.IsNullOrEmpty(fldSortCode.Text) && !String.IsNullOrEmpty(fldSIRType.Text))
+                                            {
+                                                SIR SIRdata = new SIR(fldSortCode.Text, fldSIRType.Text);
+                                                Message email = new Message(header, emailSender, emailSubject, URL.ProcessURL(emailBody));
+
+                                                SIR.WriteSIR(SIRdata);
+                                                SaveMessage(email);
+                                                
+                                                Clear_Fields();
+
+
+                                            } else
+                                            {
+                                                Message email = new Message(header, emailSender, emailSubject, URL.ProcessURL(emailBody));
+                                                SaveMessage(email);
+                                                Clear_Fields();
+                                            }
+                                        } else
+                                        {
+                                            MessageBox.Show("Email body cannot be empty!", caption: "Error");
+                                        }
+                                    } else
+                                    {
+                                        MessageBox.Show("Email subject cannot be empty!", caption: "Error");
+                                    }
+                                } else
+                                {
+                                    MessageBox.Show("Sender email must be in a valid format! (john@gmail.com)", caption: "Error");
+                                }
+                            } 
+                            else
+                            {
+                                MessageBox.Show("Sender field cannot be empty!", caption: "Error");
+                            }
+
                             break;
 
 
 
                         case "T":
                             string tweetSender = fldSender.Text;
+                            string tweetBody = fldBody.Text;
                             Regex TweetRegexSender = new Regex(@"^(@)[A-Za-z0-9_]{1,15}$");
 
-                            if(!String.IsNullOrEmpty(tweetSender))
+                            if (!String.IsNullOrEmpty(tweetSender))
                             {
-                                if(TweetRegexSender.IsMatch(tweetSender))
+                                if (TweetRegexSender.IsMatch(tweetSender))
                                 {
-                                    MessageBox.Show("Worked!");
-                                } else
-                                {
-                                    MessageBox.Show("Twitter ID doesn't match format! (@Person)");
+                                    if(!String.IsNullOrEmpty(tweetBody))
+                                    {
+                                        MessageBox.Show("Worked!");
+                                    } 
+                                    else
+                                    {
+                                        MessageBox.Show("Tweet body cannot be empty!", caption: "Error");
+                                    }
                                 }
-                            } else
+                                else
+                                {
+                                    MessageBox.Show("Twitter ID doesn't match format! (@Person)", caption: "Error");
+                                }
+                            }
+                            else
                             {
-                                MessageBox.Show("Twitter ID cannot be empty!");
+                                MessageBox.Show("Twitter ID cannot be empty!", caption: "Error");
                             }
                             break;
-
-
-
-                        default:
-                            MessageBox.Show("Error");
-                            break;
                     }
-                } else
+                } 
+                else
                 {
-                    MessageBox.Show("Header must be ten characters in the correct format! (E123456789)");
+                    MessageBox.Show("Header must be ten characters in the correct format! (E123456789)", caption: "Error");
                 }
-            } else
-            {
-                MessageBox.Show("Header cannot be empty!");
             }
-
+            else
+            {
+                MessageBox.Show("Header cannot be empty!", caption: "Error");
+            }
         }
 
         private void Clear_Click(object sender, RoutedEventArgs e)
@@ -311,8 +363,6 @@ namespace NapierFilteringSystem
         public void SaveMessage(Message writeableMessage)
         {
             MessageList jsonmsgList = new MessageList { };
-            //StreamWriter writetoJson = new StreamWriter(@"C:\Napier Filtering System\Messages.json");
-            //StreamReader readfromJson = new StreamReader(@"C:\Napier Filtering System\Messages.json");
             string jsonFilepath = @"C:\Napier Filtering System\Messages.json";
 
             if (!Directory.Exists(@"C:\Napier Filtering System"))
@@ -326,7 +376,7 @@ namespace NapierFilteringSystem
                 jsonmsgList.Messages.Add(writeableMessage);
                 File.WriteAllText(jsonFilepath, JsonConvert.SerializeObject(jsonmsgList, Formatting.Indented) + "\r\n");
 
-                MessageBox.Show("Message saved to file!");
+                MessageBox.Show("Message saved to file!" + "\r\n" + "(" + jsonFilepath + ")", caption: "Napier Filtering System");
 
                 
             } else
@@ -336,7 +386,7 @@ namespace NapierFilteringSystem
                     jsonmsgList.Messages.Add(writeableMessage);
                     File.WriteAllText(jsonFilepath, JsonConvert.SerializeObject(jsonmsgList, Formatting.Indented) + "\r\n");
 
-                    MessageBox.Show("Message saved to new json file!");
+                    MessageBox.Show("Message saved to new json file!" + "\r\n" + "(" + jsonFilepath + ")", caption: "Napier Filtering System");
                 
                 }
            
@@ -349,6 +399,8 @@ namespace NapierFilteringSystem
         {
             public List<Message> Messages { get; set; }
         }
+
+
 
         public void Clear_Fields()
         {

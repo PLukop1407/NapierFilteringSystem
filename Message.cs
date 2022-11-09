@@ -4,6 +4,7 @@ using System.Text;
 using System.IO;
 using System.Text.RegularExpressions;
 using System.Linq;
+using System.Windows;
 
 namespace NapierFilteringSystem
 {
@@ -53,29 +54,9 @@ namespace NapierFilteringSystem
                 string abbrevExpanded = abbrev.Key +  " <" + abbrev.Value + ">";
                 msgBody = Regex.Replace(msgBody, abbrevPattern, abbrevExpanded, RegexOptions.IgnoreCase);
             }
+
             return msgBody;
 
         }
-
-
-        public static string ProcessURLs(string msgBody)
-        {
-            string emailBody = msgBody;
-            Regex urlRegex = new Regex(@"(http(s)?|ftp):\/\/(www.)?([\da-zA-Z\-_]{0,2184})(.[a-z]{2,5})(.[a-z]{2,5})?(/)?([\da-zA-Z\-\?\,\'\/\+^&%\$#_@]+]{0,2184})?(.[a-z]{3,5})?");
-
-            foreach(var link in urlRegex.Matches(msgBody)) {
-
-                URL QuarantinedURL = new URL(link.ToString());
-
-
-
-
-            }
-
-
-
-            return emailBody;
-        }
-
     }
 }
