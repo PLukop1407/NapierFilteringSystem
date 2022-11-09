@@ -32,7 +32,7 @@ namespace NapierFilteringSystem
         public static string ProcessURL(string msgBody)
         {
             string jsonFilepath = @"C:\Napier Filtering System\QuarantinedURLs.json";
-            Regex urlRegex = new Regex(@"(http(s)?|ftp):\/\/(www.)?([\da-zA-Z\-_]{0,2184})(.[a-z]{2,5})(.[a-z]{2,5})?(/)?([\da-zA-Z\-\?\,\'\/\+^&%\$#_@]+]{0,2184})?(.[a-z]{3,5})?");
+            Regex urlRegex = new Regex(@"(http(s)?|ftp):\/\/(www.)?([\da-zA-Z\-_]{0,2184})(\.[a-z]{2,5})(\.[a-z]{2,5})?(/)?([\da-zA-Z\-\?\,\'\/\+^&%\$#_@]+]{0,2184})?(\.[a-z]{3,5})?");
             QuarantineList jsonurlList = new QuarantineList();
 
             if(!Directory.Exists(@"C:\Napier Filtering System"))
