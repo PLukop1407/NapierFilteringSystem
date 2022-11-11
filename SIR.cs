@@ -32,15 +32,10 @@ namespace NapierFilteringSystem
 
         }
 
-        public class SIRList
-        {
-            public List<SIR> SIRs { get; set; }
-        }
-
         public static SIR WriteSIR(SIR email)
         {
             string SIRjsonFilepath = @"C:\Napier Filtering System\SIR.json";
-            SIRList jsonSIRlist = new SIRList();
+            List<SIR> jsonSIRlist = new List<SIR>();
 
             if(!Directory.Exists(@"C:\Napier Filtering System")) {
                 Directory.CreateDirectory(@"C:\Napier Filtering System");
@@ -48,17 +43,17 @@ namespace NapierFilteringSystem
 
             if(File.Exists(SIRjsonFilepath))
             {
-                jsonSIRlist = JsonConvert.DeserializeObject<SIRList>(File.ReadAllText(SIRjsonFilepath));
-                jsonSIRlist.SIRs.Add(email);
+                jsonSIRlist = JsonConvert.DeserializeObject<List<SIR>>(File.ReadAllText(SIRjsonFilepath));
+                jsonSIRlist.Add(email);
                 File.WriteAllText(SIRjsonFilepath, JsonConvert.SerializeObject(jsonSIRlist, Formatting.Indented) + "\r\n");
 
                 MessageBox.Show("SIR saved to file!" + "\r\n" + "(" + SIRjsonFilepath + ")", caption: "Napier Filtering System");
 
             } else
             {
-                File.WriteAllText(SIRjsonFilepath, "{\"SIRs\": []}");
-                jsonSIRlist = JsonConvert.DeserializeObject<SIRList>(File.ReadAllText(SIRjsonFilepath));
-                jsonSIRlist.SIRs.Add(email);
+                File.WriteAllText(SIRjsonFilepath, "[]");
+                jsonSIRlist = JsonConvert.DeserializeObject<List<SIR>>(File.ReadAllText(SIRjsonFilepath));
+                jsonSIRlist.Add(email);
                 File.WriteAllText(SIRjsonFilepath, JsonConvert.SerializeObject(jsonSIRlist, Formatting.Indented) + "\r\n");
 
                 MessageBox.Show("SIR saved to new file!" + "\r\n" + "(" + SIRjsonFilepath + ")", caption: "Napier Filtering System");

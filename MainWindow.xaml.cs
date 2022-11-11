@@ -246,6 +246,7 @@ namespace NapierFilteringSystem
                             string tweetSender = fldSender.Text;
                             string tweetBody = fldBody.Text;
                             Regex TweetRegexSender = new Regex(@"^(@)[A-Za-z0-9_]{1,15}$");
+                            Regex TweetRegexBody = new Regex(@"(@)[A-Za-z0-9_]{1,15}");
 
                             if (!String.IsNullOrEmpty(tweetSender))
                             {
@@ -253,7 +254,17 @@ namespace NapierFilteringSystem
                                 {
                                     if(!String.IsNullOrEmpty(tweetBody))
                                     {
-                                        MessageBox.Show("Worked!");
+                                        foreach(var mention in TweetRegexBody.Matches(tweetBody))
+                                        {
+                                            Mention tweetMention = new Mention(tweetSender, mention.ToString());
+                                            Mention.WriteMention(tweetMention);
+                                        }
+                                        Message tweet = new Message(header, tweetSender, fldSubject.Text, Message.ProcessAbbreviations(tweetBody));
+                                        SaveMessage(tweet);
+                                        Clear_Fields();
+
+
+
                                     } 
                                     else
                                     {
@@ -362,7 +373,8 @@ namespace NapierFilteringSystem
 
         public void SaveMessage(Message writeableMessage)
         {
-            MessageList jsonmsgList = new MessageList { };
+            //MessageList jsonmsgList = new MessageList { };
+            List<Message> jsonmsgList = new List<Message>();
             string jsonFilepath = @"C:\Napier Filtering System\Messages.json";
 
             if (!Directory.Exists(@"C:\Napier Filtering System"))
@@ -372,8 +384,8 @@ namespace NapierFilteringSystem
                 
             if (File.Exists(@"C:\Napier Filtering System\Messages.json"))
                 {
-                jsonmsgList = JsonConvert.DeserializeObject<MessageList>(File.ReadAllText(jsonFilepath));
-                jsonmsgList.Messages.Add(writeableMessage);
+                jsonmsgList = JsonConvert.DeserializeObject<List<Message>>(File.ReadAllText(jsonFilepath));
+                jsonmsgList.Add(writeableMessage);
                 File.WriteAllText(jsonFilepath, JsonConvert.SerializeObject(jsonmsgList, Formatting.Indented) + "\r\n");
 
                 MessageBox.Show("Message saved to file!" + "\r\n" + "(" + jsonFilepath + ")", caption: "Napier Filtering System");
@@ -381,9 +393,9 @@ namespace NapierFilteringSystem
                 
             } else
                 {
-                    File.WriteAllText(jsonFilepath,"{\"Messages\": []}");
-                    jsonmsgList = JsonConvert.DeserializeObject<MessageList>(File.ReadAllText(jsonFilepath));
-                    jsonmsgList.Messages.Add(writeableMessage);
+                    File.WriteAllText(jsonFilepath,"[]");
+                    jsonmsgList = JsonConvert.DeserializeObject<List<Message>>(File.ReadAllText(jsonFilepath));
+                    jsonmsgList.Add(writeableMessage);
                     File.WriteAllText(jsonFilepath, JsonConvert.SerializeObject(jsonmsgList, Formatting.Indented) + "\r\n");
 
                     MessageBox.Show("Message saved to new json file!" + "\r\n" + "(" + jsonFilepath + ")", caption: "Napier Filtering System");
@@ -394,13 +406,6 @@ namespace NapierFilteringSystem
 
 
         }
-
-        public class MessageList
-        {
-            public List<Message> Messages { get; set; }
-        }
-
-
 
         public void Clear_Fields()
         {
