@@ -247,6 +247,7 @@ namespace NapierFilteringSystem
                             string tweetBody = fldBody.Text;
                             Regex TweetRegexSender = new Regex(@"^(@)[A-Za-z0-9_]{1,15}$");
                             Regex TweetRegexBody = new Regex(@"(@)[A-Za-z0-9_]{1,15}");
+                            Regex TweetRegexHashtag = new Regex(@"(#)\w+");
 
                             if (!String.IsNullOrEmpty(tweetSender))
                             {
@@ -259,6 +260,13 @@ namespace NapierFilteringSystem
                                             Mention tweetMention = new Mention(tweetSender, mention.ToString());
                                             Mention.WriteMention(tweetMention);
                                         }
+
+                                        foreach(var hashtag in TweetRegexHashtag.Matches(tweetBody))
+                                        {
+                                            Hashtag trend = new Hashtag(hashtag.ToString(), 1);
+                                            Hashtag.WriteHashtag(trend);
+                                        }
+
                                         Message tweet = new Message(header, tweetSender, fldSubject.Text, Message.ProcessAbbreviations(tweetBody));
                                         SaveMessage(tweet);
                                         Clear_Fields();
