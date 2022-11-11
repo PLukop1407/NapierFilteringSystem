@@ -5,7 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:NapierFilteringSystem"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="500">
+        ResizeMode="CanMinimize"
+        Title="Napier Filtering System" Height="450" Width="500">
     <Grid Margin="10,0,10,0">
         <TextBox HorizontalAlignment="Left" Margin="101,56,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" x:Name="fldHeader" TextChanged="fldHeader_TextChanged"/>
         <TextBox HorizontalAlignment="Left" Margin="101,95,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" x:Name="fldSender"/>
@@ -14,7 +15,7 @@
         <TextBlock HorizontalAlignment="Left" Margin="57,56,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="45" x:Name="txtHeader"><Run Language="en-gb" Text="Header"/></TextBlock>
         <TextBlock HorizontalAlignment="Left" Margin="57,96,0,0" TextWrapping="Wrap" VerticalAlignment="Top" x:Name="txtSender"><Run Language="en-gb" Text="Sender"/></TextBlock>
         <TextBlock HorizontalAlignment="Left" Margin="56,136,0,0" TextWrapping="Wrap" VerticalAlignment="Top" x:Name="txtSubject"><Run Language="en-gb" Text="Subject"/></TextBlock>
-        <Button Content="Button" HorizontalAlignment="Left" Margin="200,358,0,0" VerticalAlignment="Top" Width="74"/>
+        <Button Content="Lists" HorizontalAlignment="Left" Margin="200,358,0,0" VerticalAlignment="Top" Width="74" Click="Open_Lists"/>
         <Button Content="Save" HorizontalAlignment="Left" Margin="101,358,0,0" VerticalAlignment="Top" Width="74" Click="Save_Click"/>
         <Button Content="Clear" HorizontalAlignment="Left" Margin="299,358,0,0" VerticalAlignment="Top" Width="74" Click="Clear_Click"/>
         <TextBlock HorizontalAlignment="Left" Margin="10,21,0,0" TextWrapping="Wrap" VerticalAlignment="Top" x:Name="txtType"/>
