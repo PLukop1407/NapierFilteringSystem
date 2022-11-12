@@ -6,13 +6,14 @@
         xmlns:local="clr-namespace:NapierFilteringSystem"
         mc:Ignorable="d"
         ResizeMode="CanMinimize"
-        Title="Napier Filtering System - Lists" Height="450" Width="500">
-    <Grid>
-        <TextBox HorizontalAlignment="Left" Margin="45,70,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="120" Height="250" IsEnabled="False"/>
-        <TextBox HorizontalAlignment="Center" Margin="0,70,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="120" Height="250" IsEnabled="False"/>
-        <TextBox Margin="335,70,45,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Height="250" IsEnabled="False"/>
-        <TextBlock HorizontalAlignment="Left" Margin="80,49,0,0" TextWrapping="Wrap" Text="SIRs" VerticalAlignment="Top" FontWeight="Bold"/>
-        <TextBlock HorizontalAlignment="Center" Margin="0,49,0,0" TextWrapping="Wrap" Text="Mentions" VerticalAlignment="Top" FontWeight="Bold"/>
-        <TextBlock HorizontalAlignment="Left" Margin="370,49,0,0" TextWrapping="Wrap" Text="Hashtags" VerticalAlignment="Top" FontWeight="Bold"/>
+        Title="Napier Bank - Message Filtering System - Lists" Height="450" Width="712">
+    <Grid Margin="10,0,0,0">
+        <TextBox HorizontalAlignment="Left" Margin="31,71,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="200" Height="250" IsReadOnly="True"  x:Name="fldSIRlist" VerticalScrollBarVisibility="Auto" FontSize="10"/>
+        <TextBox HorizontalAlignment="Center" Margin="0,71,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="200" Height="250" IsReadOnly="True" x:Name="fldMentionList" VerticalScrollBarVisibility="Auto" FontSize="10"/>
+        <TextBox Margin="0,71,31,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="200" Height="250" IsReadOnly="True"  x:Name="fldHashtagList" HorizontalAlignment="Right" VerticalScrollBarVisibility="Auto" FontSize="10"/>
+        <TextBlock HorizontalAlignment="Left" Margin="100,50,0,0" TextWrapping="Wrap" Text="List of SIRs" VerticalAlignment="Top" FontWeight="Bold"/>
+        <TextBlock HorizontalAlignment="Center" Margin="0,50,0,0" TextWrapping="Wrap" Text="List of Mentions" VerticalAlignment="Top" FontWeight="Bold"/>
+        <TextBlock HorizontalAlignment="Right" Margin="0,50,94,0" TextWrapping="Wrap" Text="List of Trends" VerticalAlignment="Top" FontWeight="Bold"/>
+        <Button Content="Close" HorizontalAlignment="Center" Margin="0,378,0,0" VerticalAlignment="Top" Width="72" Click="Button_Click"/>
     </Grid>
 </Window>

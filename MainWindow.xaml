@@ -6,8 +6,8 @@
         xmlns:local="clr-namespace:NapierFilteringSystem"
         mc:Ignorable="d"
         ResizeMode="CanMinimize"
-        Title="Napier Filtering System" Height="450" Width="500">
-    <Grid Margin="10,0,10,0">
+        Title="Napier Bank - Message Filtering System" Height="450" Width="500">
+    <Grid>
         <TextBox HorizontalAlignment="Left" Margin="101,56,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" x:Name="fldHeader" TextChanged="fldHeader_TextChanged"/>
         <TextBox HorizontalAlignment="Left" Margin="101,95,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" x:Name="fldSender"/>
         <TextBox HorizontalAlignment="Left" Margin="101,136,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" x:Name="fldSubject"/>
@@ -22,8 +22,7 @@
         <TextBlock HorizontalAlignment="Left" Margin="101,339,0,0" Text="" TextWrapping="Wrap" VerticalAlignment="Top" x:Name="txtCharLimit" FontSize="10"/>
         <TextBox HorizontalAlignment="Left" Margin="299,136,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="74" x:Name="fldSIRType" IsEnabled="False"/>
         <TextBlock HorizontalAlignment="Left" Margin="299,119,0,0" TextWrapping="Wrap" VerticalAlignment="Top" x:Name="txtSIR"><Run Language="en-gb" Text="Incident Type"></Run></TextBlock>
-        <TextBox HorizontalAlignment="Left" Margin="299,92,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="74" IsEnabled="False" x:Name="fldSortCode"/>
-        <TextBlock HorizontalAlignment="Left" Margin="300,75,0,0" TextWrapping="Wrap" VerticalAlignment="Top" x:Name="txtSortCode"><Run Language="en-gb" Text="Sort Code"/></TextBlock>
-
+        <TextBox HorizontalAlignment="Left" Margin="299,95,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="74" IsEnabled="False" x:Name="fldSortCode"/>
+        <TextBlock HorizontalAlignment="Left" Margin="300,78,0,0" TextWrapping="Wrap" VerticalAlignment="Top" x:Name="txtSortCode"><Run Language="en-gb" Text="Sort Code"/></TextBlock>
     </Grid>
 </Window>
