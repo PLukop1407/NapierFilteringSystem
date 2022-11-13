@@ -93,7 +93,7 @@ namespace NapierFilteringSystem
                     //Iterates for every entry in the list.
                     for (int i = 0; i < listOfMentions.Count; i++)
                     {
-                        fldMentionList.AppendText("From " + listOfMentions[i].mentionID + " to " + listOfMentions[i].senderID + "\r\n"); //Display both attributes of the Mention object.
+                        fldMentionList.AppendText("From " + listOfMentions[i].senderID + " to " + listOfMentions[i].mentionID + "\r\n"); //Display both attributes of the Mention object.
                         fldMentionList.AppendText("-------------------------------"); //Formatting
                         fldMentionList.AppendText("\r\n"); //Formatting
                     }
