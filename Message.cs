@@ -13,6 +13,7 @@ using System.IO;
 using System.Text.RegularExpressions;
 using System.Linq;
 using System.Windows;
+using Newtonsoft.Json;
 
 namespace NapierFilteringSystem
 {
@@ -72,5 +73,41 @@ namespace NapierFilteringSystem
             return msgBody; //Return the message body when finished.
 
         }
+
+         public static int SaveMessage(Message writeableMessage) 
+        {
+            List<Message> jsonmsgList = new List<Message>(); //Create a List of Messages to deserialize the json file into.
+            string jsonFilepath = @"C:\Napier Filtering System\Messages.json"; //Filepath to Messages.json, I wanted to add a way for the user to change where this is stored but I don't have more time to spend on this.
+
+            if (!Directory.Exists(@"C:\Napier Filtering System")) //Checks if the directory for the json file exists, if not, this check creates that directory.
+            {
+                Directory.CreateDirectory(@"C:\Napier Filtering System");
+            }
+                
+            if (File.Exists(@"C:\Napier Filtering System\Messages.json")) //If the file already exists, the program can deserialize it into the List of Messages.
+                {
+                jsonmsgList = JsonConvert.DeserializeObject<List<Message>>(File.ReadAllText(jsonFilepath)); //Deserialize the json file
+                jsonmsgList.Add(writeableMessage); //Add the new Message to the list
+                File.WriteAllText(jsonFilepath, JsonConvert.SerializeObject(jsonmsgList, Formatting.Indented) + "\r\n"); //Serialize the list and write it to the file
+
+                MessageBox.Show("Message saved to file!" + "\r\n" + "(" + jsonFilepath + ")", caption: "Napier Bank - Message Filtering System"); //Messagebox letting the user know that the message has been saved
+
+                
+            } else //If the file doesn't exist, then there's some code to create a json file with a tiny bit of formatting
+                {
+                    File.WriteAllText(jsonFilepath,"[]"); //[] defines a list of Objects in the JSON file, meaning we can serialize our message objects into it with the Newtonsoft library.
+                    jsonmsgList = JsonConvert.DeserializeObject<List<Message>>(File.ReadAllText(jsonFilepath)); //Deserialize newly-made JSON file into List of Messages
+                    jsonmsgList.Add(writeableMessage); //Add the new Message to the list
+                    File.WriteAllText(jsonFilepath, JsonConvert.SerializeObject(jsonmsgList, Formatting.Indented) + "\r\n"); //Serialize the list and write it to the file
+
+                    MessageBox.Show("Message saved to new json file!" + "\r\n" + "(" + jsonFilepath + ")", caption: "Napier Bank - Message Filtering System"); //Different messagebox letting the user know that a JSON file was created and the message was stored in it.
+                
+                }
+            return 0;
+        }
+
+
+
+
     }
 }

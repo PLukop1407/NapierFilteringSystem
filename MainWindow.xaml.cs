@@ -190,7 +190,7 @@ namespace NapierFilteringSystem
                                         //If all of the input validation passes, the SMS text is used to create a message object
                                         //The body is sent to the ProcessAbbreviations method of the Message class, which will expand all abbreviations.
                                         Message sms = new Message(header, smsSender, fldSubject.Text, Message.ProcessAbbreviations(smsBody)); 
-                                        SaveMessage(sms); //The message is then sent to the SaveMessage method which will create a new JSON file and store the SMS message.
+                                        Message.SaveMessage(sms); //The message is then sent to the SaveMessage method which will create a new JSON file and store the SMS message.
                                         Clear_Fields(); //Clear the fields after the message is saved.
                                     } else
                                     {
@@ -235,7 +235,7 @@ namespace NapierFilteringSystem
                                                             SIR SIRdata = new SIR(fldSortCode.Text, fldSIRType.Text); //Create new SIR object with the field data.
                                                             Message SIRemail = new Message(header, emailSender, emailSubject, URL.ProcessURL(emailBody)); //Create new Message object, process URLs in the body.
                                                             SIR.WriteSIR(SIRdata); //Calls the Write method for SIR objects, writing them to the relevant JSON file.
-                                                            SaveMessage(SIRemail); //Calls the method to write the Message object to the relevant JSON file.
+                                                            Message.SaveMessage(SIRemail); //Calls the method to write the Message object to the relevant JSON file.
 
                                                             Clear_Fields(); //Clear fields after the SIR data and Email data are stored.
 
@@ -257,7 +257,7 @@ namespace NapierFilteringSystem
 
                                                 case false: //Regular Email
                                                     Message email = new Message(header, emailSender, emailSubject, URL.ProcessURL(emailBody)); //Create a new Message object with the field values, processing the URLs in the body.
-                                                    SaveMessage(email); //Call the method to write the Message object to relevant JSON file.
+                                                    Message.SaveMessage(email); //Call the method to write the Message object to relevant JSON file.
                                                     Clear_Fields(); //Clear fields after the message is saved.
                                                     break;
                                             }
@@ -317,7 +317,7 @@ namespace NapierFilteringSystem
 
 
                                         Message tweet = new Message(header, tweetSender, fldSubject.Text, Message.ProcessAbbreviations(tweetBody)); //After the Mentions and Hashtags are processed, the message then has the abbreviations in the body processed, before being stored.
-                                        SaveMessage(tweet); //This method will save the tweet, once all the processing is done.
+                                        Message.SaveMessage(tweet); //This method will save the tweet, once all the processing is done.
                                         Clear_Fields(); //Clear the fields after saving the message.
 
 
@@ -366,7 +366,7 @@ namespace NapierFilteringSystem
         {
 
 
-            if(Regex.IsMatch(fldSubject.Text,@"^SIR\d{2}/\d{2}/\d{2}$")) //Check if the subject matches SIR regex
+            if(Regex.IsMatch(fldSubject.Text, @"^SIR([0-2][0-9]|[3][0-1])/([0][1-9]|[1][0-2])/[0-99]{2}$")) //Check if the subject matches SIR regex
             {
                 Regex SortCodeRegex = new Regex(@"[S|s]ort\s[C|c]ode:\s\b\d{2}-\d{2}-\d{2}\b"); //Sort code regex for when it's in the body
                 List<string> incidents = new List<string>() //List of incidents for checking if the body contains one of them
@@ -433,36 +433,7 @@ namespace NapierFilteringSystem
         /*  This is the method for writing the message. I'm not really sure why I didn't put it in the Message class.
          *  This method takes a Message object and writes it to a JSON file (Messages.json), thanks to the Netwonsoft JSON library.
          */
-        public void SaveMessage(Message writeableMessage) 
-        {
-            List<Message> jsonmsgList = new List<Message>(); //Create a List of Messages to deserialize the json file into.
-            string jsonFilepath = @"C:\Napier Filtering System\Messages.json"; //Filepath to Messages.json, I wanted to add a way for the user to change where this is stored but I don't have more time to spend on this.
-
-            if (!Directory.Exists(@"C:\Napier Filtering System")) //Checks if the directory for the json file exists, if not, this check creates that directory.
-            {
-                Directory.CreateDirectory(@"C:\Napier Filtering System");
-            }
-                
-            if (File.Exists(@"C:\Napier Filtering System\Messages.json")) //If the file already exists, the program can deserialize it into the List of Messages.
-                {
-                jsonmsgList = JsonConvert.DeserializeObject<List<Message>>(File.ReadAllText(jsonFilepath)); //Deserialize the json file
-                jsonmsgList.Add(writeableMessage); //Add the new Message to the list
-                File.WriteAllText(jsonFilepath, JsonConvert.SerializeObject(jsonmsgList, Formatting.Indented) + "\r\n"); //Serialize the list and write it to the file
-
-                MessageBox.Show("Message saved to file!" + "\r\n" + "(" + jsonFilepath + ")", caption: "Napier Bank - Message Filtering System"); //Messagebox letting the user know that the message has been saved
-
-                
-            } else //If the file doesn't exist, then there's some code to create a json file with a tiny bit of formatting
-                {
-                    File.WriteAllText(jsonFilepath,"[]"); //[] defines a list of Objects in the JSON file, meaning we can serialize our message objects into it with the Newtonsoft library.
-                    jsonmsgList = JsonConvert.DeserializeObject<List<Message>>(File.ReadAllText(jsonFilepath)); //Deserialize newly-made JSON file into List of Messages
-                    jsonmsgList.Add(writeableMessage); //Add the new Message to the list
-                    File.WriteAllText(jsonFilepath, JsonConvert.SerializeObject(jsonmsgList, Formatting.Indented) + "\r\n"); //Serialize the list and write it to the file
-
-                    MessageBox.Show("Message saved to new json file!" + "\r\n" + "(" + jsonFilepath + ")", caption: "Napier Bank - Message Filtering System"); //Different messagebox letting the user know that a JSON file was created and the message was stored in it.
-                
-                }
-        }
+       
 
         public void Clear_Fields() //Clear_Fields()
         {
