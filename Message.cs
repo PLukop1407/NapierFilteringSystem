@@ -74,7 +74,7 @@ namespace NapierFilteringSystem
 
         }
 
-         public static int SaveMessage(Message writeableMessage) 
+         public void SaveMessage(Message writeableMessage) 
         {
             List<Message> jsonmsgList = new List<Message>(); //Create a List of Messages to deserialize the json file into.
             string jsonFilepath = @"C:\Napier Filtering System\Messages.json"; //Filepath to Messages.json, I wanted to add a way for the user to change where this is stored but I don't have more time to spend on this.
@@ -103,7 +103,6 @@ namespace NapierFilteringSystem
                     MessageBox.Show("Message saved to new json file!" + "\r\n" + "(" + jsonFilepath + ")", caption: "Napier Bank - Message Filtering System"); //Different messagebox letting the user know that a JSON file was created and the message was stored in it.
                 
                 }
-            return 0;
         }
 
 

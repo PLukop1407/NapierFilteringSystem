@@ -47,7 +47,7 @@ namespace NapierFilteringSystem
          *  The file is deserialized into a list of Mentions, and the Mention passed into this method is added to this list, before being serialized and written to the JSON file again.
          */
 
-        public static Mention WriteMention(Mention tweet)
+        public void WriteMention(Mention tweet)
         {
             string mentionJsonfilepath = @"C:\Napier Filtering System\Mentions.json"; //Filepath for the JSON file.
             List<Mention> listOfMentions = new List<Mention>(); //List of Mentions to store the contents of the JSON file after deserialization.
@@ -72,7 +72,6 @@ namespace NapierFilteringSystem
                 File.WriteAllText(mentionJsonfilepath, JsonConvert.SerializeObject(listOfMentions, Formatting.Indented) + "\r\n");
 
             }
-           return tweet;
         }
     }
 }

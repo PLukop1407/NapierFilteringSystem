@@ -42,7 +42,7 @@ namespace NapierFilteringSystem
          *  The Hashtag will only be written to the file if it doesn't already exist, otherwise that hashtag will have its use count incremented.
          */
 
-        public static Hashtag WriteHashtag(Hashtag trend)
+        public void WriteHashtag(Hashtag trend)
         {
             string hashJsonfilepath = @"C:\Napier Filtering System\Hashtags.json"; //Filepath for the Hashtags JSON file
             List<Hashtag> listOfTrends = new List<Hashtag>(); //Create a new list of Hashtags to deserialize the JSON file into.
@@ -78,7 +78,6 @@ namespace NapierFilteringSystem
                 File.WriteAllText(hashJsonfilepath, JsonConvert.SerializeObject(listOfTrends, Formatting.Indented) + "\r\n"); //Serialize the list, write it to file
 
             }
-            return trend;
         }
     }
 }

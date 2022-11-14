@@ -190,7 +190,7 @@ namespace NapierFilteringSystem
                                         //If all of the input validation passes, the SMS text is used to create a message object
                                         //The body is sent to the ProcessAbbreviations method of the Message class, which will expand all abbreviations.
                                         Message sms = new Message(header, smsSender, fldSubject.Text, Message.ProcessAbbreviations(smsBody)); 
-                                        Message.SaveMessage(sms); //The message is then sent to the SaveMessage method which will create a new JSON file and store the SMS message.
+                                        sms.SaveMessage(sms); //The message is then sent to the SaveMessage method which will create a new JSON file and store the SMS message.
                                         Clear_Fields(); //Clear the fields after the message is saved.
                                     } else
                                     {
@@ -234,8 +234,9 @@ namespace NapierFilteringSystem
                                                         {
                                                             SIR SIRdata = new SIR(fldSortCode.Text, fldSIRType.Text); //Create new SIR object with the field data.
                                                             Message SIRemail = new Message(header, emailSender, emailSubject, URL.ProcessURL(emailBody)); //Create new Message object, process URLs in the body.
-                                                            SIR.WriteSIR(SIRdata); //Calls the Write method for SIR objects, writing them to the relevant JSON file.
-                                                            Message.SaveMessage(SIRemail); //Calls the method to write the Message object to the relevant JSON file.
+                                                           
+                                                            SIRdata.WriteSIR(SIRdata); //Calls the Write method for SIR objects, writing them to the relevant JSON file.
+                                                            SIRemail.SaveMessage(SIRemail); //Calls the method to write the Message object to the relevant JSON file.
 
                                                             Clear_Fields(); //Clear fields after the SIR data and Email data are stored.
 
@@ -257,7 +258,7 @@ namespace NapierFilteringSystem
 
                                                 case false: //Regular Email
                                                     Message email = new Message(header, emailSender, emailSubject, URL.ProcessURL(emailBody)); //Create a new Message object with the field values, processing the URLs in the body.
-                                                    Message.SaveMessage(email); //Call the method to write the Message object to relevant JSON file.
+                                                    email.SaveMessage(email); //Call the method to write the Message object to relevant JSON file.
                                                     Clear_Fields(); //Clear fields after the message is saved.
                                                     break;
                                             }
@@ -299,13 +300,13 @@ namespace NapierFilteringSystem
                                         foreach(var mention in TweetHandleRegex.Matches(tweetBody)) //This loop will iterate through the mentions in the body (if there are any) and it'll create Mention objects to be stored in the Mention JSON file.
                                         {
                                             Mention tweetMention = new Mention(tweetSender, mention.ToString()); //Create mention object, turn var mention into string for the object.
-                                            Mention.WriteMention(tweetMention); //Call the Write method for the Mention.
+                                            tweetMention.WriteMention(tweetMention); //Call the Write method for the Mention.
                                         }
 
                                         foreach(var hashtag in TweetRegexHashtag.Matches(tweetBody)) //This loop will iterate through every hashtag in the body (if there are any), creating a Hashtag object for them.
                                         {
                                             Hashtag trend = new Hashtag(hashtag.ToString(), 1); //Create hashtag object, turn var trend into string for the object.
-                                            Hashtag.WriteHashtag(trend); //Call the write method for the hashtag.
+                                            trend.WriteHashtag(trend); //Call the write method for the hashtag.
                                         }
 
                                         if (Application.Current.Windows.OfType<ListWindow>().Any()) //If the Lists window is open, this will update the lists.
@@ -317,7 +318,7 @@ namespace NapierFilteringSystem
 
 
                                         Message tweet = new Message(header, tweetSender, fldSubject.Text, Message.ProcessAbbreviations(tweetBody)); //After the Mentions and Hashtags are processed, the message then has the abbreviations in the body processed, before being stored.
-                                        Message.SaveMessage(tweet); //This method will save the tweet, once all the processing is done.
+                                        tweet.SaveMessage(tweet); //This method will save the tweet, once all the processing is done.
                                         Clear_Fields(); //Clear the fields after saving the message.
 
 

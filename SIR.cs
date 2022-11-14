@@ -47,7 +47,7 @@ namespace NapierFilteringSystem
          *  The file is deserialized into a List of SIRs, so that a new SIR object can be added.
          *  Once the new SIR object is added, the list is serialized and written to the JSON file.
          */
-        public static SIR WriteSIR(SIR email)
+        public void WriteSIR(SIR email)
         {
             string SIRjsonFilepath = @"C:\Napier Filtering System\SIR.json"; //Filepath for the SIR JSON file.
             List<SIR> jsonSIRlist = new List<SIR>(); //Initialising the List of SIRs for deserializing the JSON file into.
@@ -73,7 +73,6 @@ namespace NapierFilteringSystem
                 File.WriteAllText(SIRjsonFilepath, JsonConvert.SerializeObject(jsonSIRlist, Formatting.Indented) + "\r\n"); //Serialize the list and then write it to the JSON file.
 
             }
-            return email;
         }
     }
 }
