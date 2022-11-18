@@ -41,7 +41,7 @@ namespace NapierFilteringSystem
         public static string ProcessURL(string msgBody)
         {
             string jsonFilepath = @"C:\Napier Filtering System\QuarantinedURLs.json"; //Filepath for the JSON file
-            Regex urlRegex = new Regex(@"(http(s)?|ftp):\/\/(www.)?([\da-zA-Z\-_]{0,2184})(\.[a-z]{2,5})(\.[a-z]{2,5})?(/)?([\da-zA-Z\-\?\,\'\/\+^&%\$#_@=]+]{0,2184})?(\.[a-z]{3,5})?"); //URL Regex, this was a rough one, won't explain it.
+            Regex urlRegex = new Regex(@"(http(s)?|ftp):\/\/(www.)?([\da-zA-Z\-_]{0,2184})(\.[a-z]{2,5})(\.[a-z]{2,5})?(/)?([\da-zA-Z\-\?\,\'\/\+^&%\$#_@=]+]{0,2184})?(\.[a-z]{3,5})?"); //URL Regex,  won't explain it.
             List<URL> jsonurlList = new List<URL>(); //Initialise List of URLs for Deserializing / Serializing.
 
             if(!Directory.Exists(@"C:\Napier Filtering System")) //Create the Directory for the JSON file if it doesn't exist.

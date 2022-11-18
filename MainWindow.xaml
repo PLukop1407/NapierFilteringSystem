@@ -10,7 +10,7 @@
     <Grid>
         <TextBox HorizontalAlignment="Left" Margin="101,56,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" x:Name="fldHeader" TextChanged="fldHeader_TextChanged"/>
         <TextBox HorizontalAlignment="Left" Margin="101,95,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" x:Name="fldSender"/>
-        <TextBox HorizontalAlignment="Left" Margin="101,136,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" x:Name="fldSubject"/>
+        <TextBox HorizontalAlignment="Left" Margin="101,136,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" x:Name="fldSubject" TextChanged="fldSubject_TextChanged"/>
         <TextBox HorizontalAlignment="Left" Margin="101,197,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="272" Height="142" x:Name="fldBody" TextChanged="fldBody_TextChanged" AcceptsReturn="True"/>
         <TextBlock HorizontalAlignment="Left" Margin="57,56,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="45" x:Name="txtHeader"><Run Language="en-gb" Text="Header"/></TextBlock>
         <TextBlock HorizontalAlignment="Left" Margin="57,96,0,0" TextWrapping="Wrap" VerticalAlignment="Top" x:Name="txtSender"><Run Language="en-gb" Text="Sender"/></TextBlock>

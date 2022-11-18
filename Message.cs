@@ -74,7 +74,13 @@ namespace NapierFilteringSystem
 
         }
 
-         public void SaveMessage(Message writeableMessage) 
+
+
+        /*  This is the method for writing the message.
+         *  This method takes a Message object and writes it to a JSON file (Messages.json), thanks to the Netwonsoft JSON library.
+         */
+
+        public void SaveMessage(Message writeableMessage) 
         {
             List<Message> jsonmsgList = new List<Message>(); //Create a List of Messages to deserialize the json file into.
             string jsonFilepath = @"C:\Napier Filtering System\Messages.json"; //Filepath to Messages.json, I wanted to add a way for the user to change where this is stored but I don't have more time to spend on this.

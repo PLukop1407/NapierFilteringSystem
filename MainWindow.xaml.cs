@@ -72,13 +72,16 @@ namespace NapierFilteringSystem
                         fldHeader.Visibility = Visibility.Visible;
 
                         fldSubject.Visibility = Visibility.Hidden;
+                        fldSubject.Text = "";
                         txtSubject.Visibility = Visibility.Hidden;
 
                         fldSender.Visibility = Visibility.Visible;
+                        fldSender.Text = "";
                         txtSender.Visibility = Visibility.Visible;
                         fldSender.MaxLength = 15; //Max number length is 15 characters
 
                         fldBody.Visibility = Visibility.Visible;
+                        fldBody.Text = "";
                         fldBody.IsEnabled = true;
                         fldBody.MaxLength = 140; //Max length for a text is 140 characters.
 
@@ -88,8 +91,10 @@ namespace NapierFilteringSystem
                         txtType.Visibility = Visibility.Visible;
 
                         fldSIRType.Visibility = Visibility.Hidden;
+                        fldSIRType.Text = "";
                         txtSIR.Visibility = Visibility.Hidden;
                         fldSortCode.Visibility = Visibility.Hidden;
+                        fldSortCode.Text = "";
                         txtSortCode.Visibility = Visibility.Hidden;
 
                         break;
@@ -99,12 +104,15 @@ namespace NapierFilteringSystem
 
                         fldSubject.Visibility = Visibility.Visible;
                         fldSubject.MaxLength = 20; //Max length for the subject is 20 characters.
+                        fldSubject.Text = "";
                         txtSubject.Visibility = Visibility.Visible;
 
                         fldSender.Visibility = Visibility.Visible;
+                        fldSender.Text = "";
                         txtSender.Visibility = Visibility.Visible;
 
                         fldBody.Visibility = Visibility.Visible;
+                        fldBody.Text = "";
                         fldBody.IsEnabled = true;
                         fldBody.MaxLength = 1028; //Max length for an email is 1028 characters.
 
@@ -112,20 +120,27 @@ namespace NapierFilteringSystem
 
                         txtType.Text = "Email";
                         txtType.Visibility = Visibility.Visible;
+
+                        fldSIRType.Text = "";
+                        fldSortCode.Text = "";
+
                         break;
 
                     case "T": //If the message is a tweet, hide the subject.
                         fldHeader.Visibility = Visibility.Visible;
 
                         fldSubject.Visibility = Visibility.Hidden;
+                        fldSubject.Text = "";
                         txtSubject.Visibility = Visibility.Hidden;
 
                         fldSender.Visibility = Visibility.Visible;
                         fldSender.MaxLength = 15; //Max handle length for a Twitter user
+                        fldSender.Text = "";
                         txtSender.Visibility = Visibility.Visible;
 
                         fldBody.Visibility = Visibility.Visible;
                         fldBody.IsEnabled = true;
+                        fldBody.Text = "";
                         fldBody.MaxLength = 140; //Max length for a tweet is 140 characters.
 
                         txtCharLimit.Text = fldBody.Text.Length + " / " + fldBody.MaxLength;
@@ -134,8 +149,10 @@ namespace NapierFilteringSystem
                         txtType.Visibility = Visibility.Visible;
 
                         fldSIRType.Visibility = Visibility.Hidden;
+                        fldSIRType.Text = "";
                         txtSIR.Visibility = Visibility.Hidden;
                         fldSortCode.Visibility = Visibility.Hidden;
+                        fldSortCode.Text = "";
                         txtSortCode.Visibility = Visibility.Hidden;
                         break;
                 } 
@@ -369,6 +386,7 @@ namespace NapierFilteringSystem
 
             if(Regex.IsMatch(fldSubject.Text, @"^SIR([0-2][0-9]|[3][0-1])/([0][1-9]|[1][0-2])/[0-99]{2}$")) //Check if the subject matches SIR regex
             {
+
                 Regex SortCodeRegex = new Regex(@"[S|s]ort\s[C|c]ode:\s\b\d{2}-\d{2}-\d{2}\b"); //Sort code regex for when it's in the body
                 List<string> incidents = new List<string>() //List of incidents for checking if the body contains one of them
                 {
@@ -431,9 +449,6 @@ namespace NapierFilteringSystem
             txtCharLimit.Text = fldBody.Text.Length + " / " + fldBody.MaxLength;
 
         }
-        /*  This is the method for writing the message. I'm not really sure why I didn't put it in the Message class.
-         *  This method takes a Message object and writes it to a JSON file (Messages.json), thanks to the Netwonsoft JSON library.
-         */
        
 
         public void Clear_Fields() //Clear_Fields()
@@ -456,6 +471,21 @@ namespace NapierFilteringSystem
             } else
             {
                 MessageBox.Show("List Window already open!", caption: "Error"); //Give the user an error if they try to open another list window.
+            }
+        }
+
+        private void fldSubject_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (Regex.IsMatch(fldSubject.Text, @"^SIR([0-2][0-9]|[3][0-1])/([0][1-9]|[1][0-2])/[0-99]{2}$")) //Check if the subject matches SIR regex
+            {
+                txtType.Text = "Significant Incident Report";
+               
+
+            }
+            else
+            {
+                txtType.Text = "Email";
+
             }
         }
     }
