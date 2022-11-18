@@ -122,11 +122,11 @@ namespace NapierFilteringSystem
                     }
                 } else //if there are no entries in the list, print No Trends Stored
                 {
-                    fldHashtagList.Text = "\t     [No Trends stored ]";
+                    fldHashtagList.Text = "\t     [ No Trends stored ]";
                 }
             } else //If there isn't a Hashtag JSON file, print No Trends Stored.
             {
-                fldHashtagList.Text = "\t     [No Trends stored ]";
+                fldHashtagList.Text = "\t     [ No Trends stored ]";
             }
         }
     }

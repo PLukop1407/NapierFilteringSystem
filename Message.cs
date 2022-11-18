@@ -59,16 +59,27 @@ namespace NapierFilteringSystem
          */
         public static string ProcessAbbreviations(string msgBody)
         {
-            //Read the abbrevations file into a Dictionary, with the key being an abbreviation and the value being the meaning of said abbreviation.
-            Dictionary<string, string> abbreviations = File.ReadAllLines(@"C:\textwords.csv").Select(line => line.Split(',')).ToDictionary(line => line[0], line => line[1]);
+            string abbrevFile = @"C:\textwords.csv";
 
-            //Iterate through the Dictionary, checking if any abbreviation is found in the body of the message.
-            foreach(var abbrev in abbreviations)
+
+            //Checking if the abbreviation file exists in the C: directory
+            if (File.Exists(abbrevFile))
             {
-                string abbrevPattern = string.Format(@"\b{0}\b", abbrev.Key); //Insert the abbreviation into a regex variable, which is then used to replace any abbreviations found.
-                string abbrevExpanded = abbrev.Key +  " <" + abbrev.Value + ">"; //This variable stores the abbreviation and the expansion, replacing any abbreviation found in the body. This means that "LOL" becomes "LOL <Laugh Out Loud>"
-                msgBody = Regex.Replace(msgBody, abbrevPattern, abbrevExpanded, RegexOptions.IgnoreCase); //Replace any abbreviations found in the message body using Regex.Replace
-            }
+                //Read the abbrevations file into a Dictionary, with the key being an abbreviation and the value being the meaning of said abbreviation.
+                Dictionary<string, string> abbreviations = File.ReadAllLines(abbrevFile).Select(line => line.Split(',')).ToDictionary(line => line[0], line => line[1]);
+
+                //Iterate through the Dictionary, checking if any abbreviation is found in the body of the message.
+                foreach (var abbrev in abbreviations)
+                {
+                    string abbrevPattern = string.Format(@"\b{0}\b", abbrev.Key); //Insert the abbreviation into a regex variable, which is then used to replace any abbreviations found.
+                    string abbrevExpanded = abbrev.Key + " <" + abbrev.Value + ">"; //This variable stores the abbreviation and the expansion, replacing any abbreviation found in the body. This means that "LOL" becomes "LOL <Laugh Out Loud>"
+                    msgBody = Regex.Replace(msgBody, abbrevPattern, abbrevExpanded, RegexOptions.IgnoreCase); //Replace any abbreviations found in the message body using Regex.Replace
+                }
+            } else
+            {
+                //Error if the file cannot be found
+                MessageBox.Show("Missing 'textwords.csv' in " + "'" + abbrevFile + "'" + "\r\n" + "Cannot process abbreviations without abbreviation file!", caption: "Error");
+            } 
 
             return msgBody; //Return the message body when finished.
 

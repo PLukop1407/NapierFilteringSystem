@@ -41,7 +41,7 @@ namespace NapierFilteringSystem
         public static string ProcessURL(string msgBody)
         {
             string jsonFilepath = @"C:\Napier Filtering System\QuarantinedURLs.json"; //Filepath for the JSON file
-            Regex urlRegex = new Regex(@"(http(s)?|ftp):\/\/(www.)?([\da-zA-Z\-_]{0,2184})(\.[a-z]{2,5})(\.[a-z]{2,5})?(/)?([\da-zA-Z\-\?\,\'\/\+^&%\$#_@=]+]{0,2184})?(\.[a-z]{3,5})?"); //URL Regex,  won't explain it.
+            Regex urlRegex = new Regex(@"(http(s)?|ftp):\/\/(www.)?([\da-zA-Z\-_]{0,2184})(\.[a-z]{2,5})(\.[a-z]{2,5})?(/)?([\da-zA-Z\-\?\,\'\/\+^&%\$#_@=]+]{0,2184})?(\.[a-z]{3,5})?"); //URL Regex, not explaining it.
             List<URL> jsonurlList = new List<URL>(); //Initialise List of URLs for Deserializing / Serializing.
 
             if(!Directory.Exists(@"C:\Napier Filtering System")) //Create the Directory for the JSON file if it doesn't exist.
@@ -58,7 +58,8 @@ namespace NapierFilteringSystem
                 {
                     URL QuarantinedURL = new URL(link.ToString()); //Create new URL, convert var to string for the object.
                     jsonurlList.Add(QuarantinedURL); //Add found URL to list 
-                    string URLPattern = string.Format(@"\b{0}\b", link); //Create pattern for the specific URL that was found
+                    string url = Regex.Escape(link.ToString());
+                    string URLPattern = string.Format(@"\b{0}\b", url); //Create pattern for the specific URL that was found
                     msgBody = Regex.Replace(msgBody, URLPattern, "<Quarantined URL>", RegexOptions.IgnoreCase); //Replace the URL in the body with <Quarantined URL>
 
                 }
@@ -74,7 +75,8 @@ namespace NapierFilteringSystem
                 {
                     URL QuarantinedURL = new URL(link.ToString());
                     jsonurlList.Add(QuarantinedURL);
-                    string URLPattern = string.Format(@"\b{0}\b", link);
+                    string url = Regex.Escape(link.ToString());
+                    string URLPattern = string.Format(@"\b{0}\b", url);
                     msgBody = Regex.Replace(msgBody, URLPattern, " <Quarantined URL> ", RegexOptions.IgnoreCase); 
 
 
